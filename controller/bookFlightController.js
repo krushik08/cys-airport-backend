@@ -223,8 +223,13 @@ const bookFlightController = {
   findTag: catchAsync(async (req, res) => {
     try {
       const { id } = req.params;
-      console.log('id', id);
+      if (!id) {
+        return res.badRequest(null, 'Please enter tag number');
+      }
       const data = await BookFlight.findOne({ baggageTag: id });
+      if (!data) {
+        return res.badRequest(null, 'Please enter valid tag number');
+      }
       return res.ok(data, 'Book Flight  Successfully. ');
     } catch (err) {
       return res.error(err);
